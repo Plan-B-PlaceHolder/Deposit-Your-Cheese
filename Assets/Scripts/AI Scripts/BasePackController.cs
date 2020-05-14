@@ -32,6 +32,11 @@ public class BasePackController : MonoBehaviour
             if (Vector3.Distance(Player.transform.position, animal.transform.position) <= 8 && !animal.GetComponent<BasePackBehavController>().Attacked)
             {
                 animal.GetComponent<BasePackBehavController>().Attack(Player.transform);
+
+            }
+            else if (AttackInProgress())
+            {
+                animal.GetComponent<BasePackBehavController>().CirclePlayer(Player.transform);
             }
             else
             {
@@ -40,6 +45,19 @@ public class BasePackController : MonoBehaviour
 
         }
 
+    }
+
+
+    bool AttackInProgress()
+    {
+        foreach (GameObject animal in Animals)
+        {
+            if (animal.GetComponent<BasePackBehavController>().Attacking)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

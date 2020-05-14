@@ -13,6 +13,7 @@ public class BasePackBehavController : MonoBehaviour
     float MinAngle = 0;
 
     public bool Attacked = false;
+    public bool Attacking = false;
 
     private void Awake()
     {
@@ -23,28 +24,27 @@ public class BasePackBehavController : MonoBehaviour
     public void Attack(Transform playerPos)
     {
         // Face player and dash towards them dealing damage
-        if (Vector3.Dot(transform.forward, (playerPos.position - transform.position).normalized) < MinAngle)
-        {
-            transform.LookAt(playerPos);
-        }
-        else
-        {
+        Attacking = true;
+        transform.LookAt(playerPos);
+        rb.AddForce(transform.forward * DashSpeed, ForceMode.Impulse);
+        Attacked = true;
+        StartCoroutine("ResetAttack");
 
-            rb.AddForce(transform.forward * DashSpeed, ForceMode.Impulse);
-            Attacked = true;
-            StartCoroutine("ResetAttack");
+
         }
 
 
+    public void CirclePlayer(Transform playerPos)
+    {
+        // TO DO
     }
-
-
 
 
     IEnumerator ResetAttack()
     {
         yield return new WaitForSeconds(2.0f);
         Attacked = false;
+        Attacking = false;
 
     }
 
